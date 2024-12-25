@@ -14,7 +14,6 @@ const Login: React.FC = () => {
             await loginUser(email, password);
             navigate("/users");
             console.log("Login successful. Navigating to /users...");
-            console.log("Firebase API Key:", process.env.REACT_APP_FIREBASE_API_KEY);
 
         } catch (error: any) {
             if (error.code === "auth/user-not-found") {
@@ -72,7 +71,16 @@ const Login: React.FC = () => {
                 </Form>
 
                 <p className="text-center mt-3 text-muted">
-                    Don't have an account? <a href="/signup">Sign up</a>
+                    Don't have an account? <span
+                        onClick={() => navigate("/signup")}
+                        style={{
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            color: "blue",
+                        }}
+                    >
+                        Signup
+                    </span>
                 </p>
             </motion.div>
         </Container>

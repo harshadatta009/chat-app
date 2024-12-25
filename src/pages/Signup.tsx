@@ -103,7 +103,16 @@ const Signup: React.FC = () => {
                 </Form>
 
                 <p className="text-center mt-3 text-muted">
-                    Already have an account? <a href="/">Login</a>
+                    Already have an account? <span
+                        onClick={() => navigate("/")}
+                        style={{
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            color: "blue",
+                        }}
+                    >
+                        Login
+                    </span>
                 </p>
             </motion.div>
         </Container>
