@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { Spinner, Button, Card, Container, Row, Col } from "react-bootstrap";
+import { motion } from "framer-motion";
 
 const UsersList: React.FC = () => {
     const [users, setUsers] = useState<any[]>([]);
@@ -28,7 +30,6 @@ const UsersList: React.FC = () => {
                     }));
 
                     setUsers(fetchedUsers);
-                    console.log(fetchUsers);
                 }
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -45,33 +46,87 @@ const UsersList: React.FC = () => {
     };
 
     if (loading) {
-        return <div>Loading users...</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     return (
-        <div className="container mt-4">
-            <h3>Select a User to Chat</h3>
+        <Container className="mt-4">
+            <motion.h3
+                className="text-center mb-4"
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                Select a User to Chat
+            </motion.h3>
             {users.length === 0 ? (
-                <p>No users found.</p>
+                <motion.p
+                    className="text-center text-muted"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    No users found.
+                </motion.p>
             ) : (
-                <ul className="list-group">
-                    {users.map((user) => (
-                        <li
-                            key={user.id}
-                            className="list-group-item d-flex justify-content-between align-items-center"
-                        >
-                            {user.username || "Unnamed User"}
-                            <button
-                                className="btn btn-primary"
-                                onClick={() => handleStartChat(user.id)}
+                <Row className="g-4">
+                    {users.map((user, index) => (
+                        <Col md={6} lg={4} key={user.id}>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    delay: index * 0.1,
+                                    duration: 0.5,
+                                    ease: "easeOut",
+                                }}
                             >
-                                Chat
-                            </button>
-                        </li>
+                                <Card className="shadow-sm border-0 rounded-3">
+                                    <Card.Body className="d-flex flex-column align-items-center">
+                                        <motion.div
+                                            className="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white mb-3"
+                                            style={{
+                                                width: "70px",
+                                                height: "70px",
+                                                fontSize: "1.5rem",
+                                                fontWeight: "bold",
+                                            }}
+                                            whileHover={{
+                                                scale: 1.2,
+                                                rotate: 10,
+                                            }}
+                                        >
+                                            {user.username.charAt(0).toUpperCase()}
+                                        </motion.div>
+                                        <Card.Title className="text-center text-capitalize fw-bold">
+                                            {user.username || "Unnamed User"}
+                                        </Card.Title>
+                                        <Card.Text className="text-center text-muted">
+                                            {user.email}
+                                        </Card.Text>
+                                        <motion.div whileHover={{ scale: 1.1 }}>
+                                            <Button
+                                                variant="primary"
+                                                className="w-100 mt-2"
+                                                onClick={() => handleStartChat(user.id)}
+                                            >
+                                                Chat
+                                            </Button>
+                                        </motion.div>
+                                    </Card.Body>
+                                </Card>
+                            </motion.div>
+                        </Col>
                     ))}
-                </ul>
+                </Row>
             )}
-        </div>
+        </Container>
     );
 };
 
