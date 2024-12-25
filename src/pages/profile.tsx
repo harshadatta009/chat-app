@@ -210,7 +210,7 @@ const Profile: React.FC = () => {
 
                             <p className="mt-3">
                                 <span
-                                    onClick={() => navigate("/chat")}
+                                    onClick={() => navigate("/")}
                                     style={{
                                         cursor: "pointer",
                                         textDecoration: "underline",
