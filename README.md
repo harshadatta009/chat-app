@@ -1,7 +1,3 @@
-If you haven't implemented the **online/offline** feature yet, you can exclude or update that section in the `README.md`. Here's the modified version:
-
----
-
 # Firebase Chat App 🚀
 
 A real-time chat application built with **React**, **TypeScript**, and **Firebase**. This app features one-to-one messaging, user authentication, profile management, and a modern, responsive UI.
