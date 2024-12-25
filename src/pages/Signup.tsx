@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../firebase/auth";
-import { Container, Row, Col, Form, Button, Toast, ToastContainer } from "react-bootstrap";
+import { Container, Form, Button, Toast, ToastContainer } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 const Signup: React.FC = () => {
