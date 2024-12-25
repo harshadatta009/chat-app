@@ -22,11 +22,11 @@ A real-time chat application built with **React**, **TypeScript**, and **Firebas
 
 ### Users List
 
-![Users List](![alt text](image.png))
+(image.png)
 
 ### Chat Interface
 
-![Chat Interface](![alt text](image-1.png))
+(image-1.png)
 
 ---
 
