@@ -6,8 +6,8 @@ import ChatBox from "../components/Chat/ChatBox";
 import MessageInput from "../components/Chat/MessageInput";
 
 const ChatPage: React.FC = () => {
-    const { userId, chatId } = useParams<{ userId: string, chatId?: string }>();
-    const [conversationId, setConversationId] = useState<string | null>(chatId || null);
+    const { userId} = useParams<{ userId: string}>();
+    const [conversationId, setConversationId] = useState<string | null>( null);
     const [messages, setMessages] = useState<any[]>([]);
     const [recipientName, setRecipientName] = useState<string>("");
 
