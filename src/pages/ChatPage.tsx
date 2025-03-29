@@ -85,8 +85,8 @@ const ChatPage: React.FC = () => {
     return (
         <div>
             <h3 className="text-center">{recipientName}</h3>
-            <ChatBox messages={messages} currentUserId={auth.currentUser?.uid || ""} chatId={conversationId || ''} />
-            <MessageInput onSend={handleSendMessage} chatId={conversationId || ''} />
+            <ChatBox messages={messages} currentUserId={auth.currentUser?.uid || ""}  />
+            <MessageInput onSend={handleSendMessage} />
         </div>
     );
 };
