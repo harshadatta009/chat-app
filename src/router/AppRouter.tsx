@@ -7,6 +7,8 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 import Profile from '../pages/profile';
 import UsersList from '../pages/UsersList';
+import CreateGroup from '../pages/CreateGroup';
+import GroupChat from '../pages/GroupChat';
 const router = createBrowserRouter([
     {
         path: '/',
@@ -37,6 +39,30 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute>
                 <ChatPage />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/profile',
+        element: (
+            <ProtectedRoute>
+                <Profile />
+            </ProtectedRoute>
+        )
+    },
+    {
+        path: "/create-group", // Add route for creating a group
+        element: (
+            <ProtectedRoute>
+                <CreateGroup />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/group-chat/:groupId", // Route for the group chat page
+        element: (
+            <ProtectedRoute>
+                <GroupChat />
             </ProtectedRoute>
         ),
     },
