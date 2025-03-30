@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { db, auth } from "../firebase/firebase";
 import { collection, query, where, addDoc, getDocs, onSnapshot, doc, getDoc, orderBy } from "firebase/firestore";
 import ChatBox from "../components/Chat/ChatBox";
 import MessageInput from "../components/Chat/MessageInput";
 
-const ChatPage: React.FC = () => {
-    const { userId} = useParams<{ userId: string}>();
-    const [conversationId, setConversationId] = useState<string | null>( null);
+interface ChatPageProps {
+    userId?: string;
+    groupId?: string;
+}
+
+const ChatPage: React.FC<ChatPageProps> = ({ userId, groupId }) => {
+    const [conversationId, setConversationId] = useState<string | null>(null);
     const [messages, setMessages] = useState<any[]>([]);
-    const [recipientName, setRecipientName] = useState<string>("");
+    const [chatName, setChatName] = useState<string>("");
 
     useEffect(() => {
-        const fetchOrCreateConversation = async () => {
+        const fetchChatData = async () => {
             try {
                 const user = auth.currentUser;
-                if (user) {
-                    const recipientDoc = await getDoc(doc(db, "users", userId!));
+                if (!user) return;
+
+                if (userId) {
+                    // **Handle private user chats**
+                    const recipientDoc = await getDoc(doc(db, "users", userId));
                     if (recipientDoc.exists()) {
-                        setRecipientName(recipientDoc.data()?.username || "Unnamed User");
+                        setChatName(recipientDoc.data()?.username || "Unnamed User");
                     }
 
-                    const q = query(
-                        collection(db, "conversations"),
-                        where("participants", "array-contains", user.uid)
-                    );
+                    const q = query(collection(db, "conversations"), where("participants", "array-contains", user.uid));
                     const querySnapshot = await getDocs(q);
 
-                    const existingConversation = querySnapshot.docs.find((doc) =>
+                    const existingConversation = querySnapshot.docs.find(doc =>
                         doc.data().participants.includes(userId)
                     );
 
@@ -39,21 +42,32 @@ const ChatPage: React.FC = () => {
                         });
                         setConversationId(docRef.id);
                     }
+                } else if (groupId) {
+                    // **Handle group chats (Fix: Use 'groups' collection instead of 'conversations')**
+                    const groupDoc = await getDoc(doc(db, "groups", groupId));
+                    if (groupDoc.exists()) {
+                        setChatName(groupDoc.data()?.groupName || "Unnamed Group");
+                        setConversationId(groupId); // **Use groupId as conversationId**
+                    }
                 }
             } catch (error) {
-                console.error("Error fetching/creating conversation:", error);
+                console.error("Error fetching chat data:", error);
             }
         };
 
-        fetchOrCreateConversation();
-    }, [userId]);
+        fetchChatData();
+    }, [userId, groupId]);
 
     useEffect(() => {
         if (conversationId) {
+            const chatPath = userId
+                ? `conversations/${conversationId}/messages`
+                : `groups/${conversationId}/messages`; // **Fix: Correct path for groups**
+
             const unsubscribe = onSnapshot(
-                query(collection(db, `conversations/${conversationId}/messages`), orderBy("createdAt", "asc")),
-                (snapshot) => {
-                    const fetchedMessages = snapshot.docs.map((doc) => ({
+                query(collection(db, chatPath), orderBy("createdAt", "asc")),
+                snapshot => {
+                    const fetchedMessages = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data(),
                     }));
@@ -71,7 +85,11 @@ const ChatPage: React.FC = () => {
         try {
             const user = auth.currentUser;
             if (user) {
-                await addDoc(collection(db, `conversations/${conversationId}/messages`), {
+                const chatPath = userId
+                    ? `conversations/${conversationId}/messages`
+                    : `groups/${conversationId}/messages`; // **Fix: Correct path for groups**
+
+                await addDoc(collection(db, chatPath), {
                     senderId: user.uid,
                     text,
                     createdAt: new Date(),
@@ -83,9 +101,9 @@ const ChatPage: React.FC = () => {
     };
 
     return (
-        <div>
-            <h3 className="text-center">{recipientName}</h3>
-            <ChatBox messages={messages} currentUserId={auth.currentUser?.uid || ""}  />
+        <div className="d-flex flex-column vh-100">
+            <div className="p-2 bg-primary text-white text-center">{chatName}</div>
+            <ChatBox messages={messages} currentUserId={auth.currentUser?.uid || ""} />
             <MessageInput onSend={handleSendMessage} />
         </div>
     );
