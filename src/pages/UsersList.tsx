@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { ListGroup, Container, Button } from "react-bootstrap";
+import { ListGroup, Container } from "react-bootstrap";
 import { motion } from "framer-motion";
 import ChatPage from "./ChatPage";
 

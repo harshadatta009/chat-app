@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { listenToMessages, sendMessage } from "../firebase/db";
-import { auth } from "../firebase/firebase";
-import ChatBox from "../components/Chat/ChatBox";
-import MessageInput from "../components/Chat/MessageInput";
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import { listenToMessages, sendMessage } from "../firebase/db";
+// import { auth } from "../firebase/firebase";
+// import ChatBox from "../components/Chat/ChatBox";
+// import MessageInput from "../components/Chat/MessageInput";
 
 const GroupChat: React.FC = () => {
-    const { groupId } = useParams<{ groupId: string }>();
-    const [messages, setMessages] = useState<any[]>([]);
-    const currentUserId = auth.currentUser?.uid || "";
+    // const { groupId } = useParams<{ groupId: string }>();
+    // const [messages, setMessages] = useState<any[]>([]);
+    // const currentUserId = auth.currentUser?.uid || "";
 
-    useEffect(() => {
-        if (groupId) {
-            // Listen to group messages in real-time
-            const unsubscribe = listenToMessages(groupId, true, setMessages);
-            return () => unsubscribe();
-        }
-    }, [groupId]);
+    // useEffect(() => {
+    //     if (groupId) {
+    //         // Listen to group messages in real-time
+    //         const unsubscribe = listenToMessages(groupId, true, setMessages);
+    //         return () => unsubscribe();
+    //     }
+    // }, [groupId]);
 
-    const handleSendMessage = async (text: string) => {
-        if (groupId && text.trim()) {
-            await sendMessage(text, currentUserId, groupId, true);
-        }
-    };
+    // const handleSendMessage = async (text: string) => {
+    //     if (groupId && text.trim()) {
+    //         await sendMessage(text, currentUserId, groupId, true);
+    //     }
+    // };
 
     return (
         <div className="chat-container">
