@@ -34,14 +34,14 @@ const CreateGroup: React.FC = () => {
             const user = auth.currentUser;
             if (!user) throw new Error("User not authenticated");
 
-            const groupRef = await addDoc(collection(db, "groups"), {
+            await addDoc(collection(db, "groups"), {
                 groupName,
                 participants: [user.uid, ...selectedUsers], // Include creator in participants
                 createdAt: new Date(),
             });
 
             alert("Group created successfully!");
-            navigate(`/group-chat/${groupRef.id}`);
+            navigate('/dashboard');
         } catch (error) {
             console.error("Error creating group:", error);
             alert("Failed to create group!");

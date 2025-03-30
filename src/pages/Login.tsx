@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         try {
             await loginUser(email, password);
-            navigate("/users");
+            navigate("/dashboard");
             console.log("Login successful. Navigating to /users...");
         } catch (error: any) {
             if (error.code === "auth/user-not-found") {

@@ -26,9 +26,9 @@ const GroupChat: React.FC = () => {
 
     return (
         <div className="chat-container">
-            <h3 className="text-center">Group Chat</h3>
+            {/* <h3 className="text-center">Group Chat</h3>
             <ChatBox messages={messages} currentUserId={currentUserId} />
-            <MessageInput onSend={handleSendMessage} />
+            <MessageInput onSend={handleSendMessage} /> */}
         </div>
     );
 };

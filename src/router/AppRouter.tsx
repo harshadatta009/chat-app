@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/users",
+        path: "/dashboard",
         element: (
             <ProtectedRoute>
                 <UsersList />
